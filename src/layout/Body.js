@@ -2,33 +2,41 @@ import { useEffect, useState } from "react";
 import BlogList from "../templates/BlogList";
 
 const Home = () => {
-    const [blogs, setBlogs] = useState(null);
-    const handleBlogDelete = (id) => {
-        const newBlogList = blogs.filter((blog) => blog.id !== id)
-        setBlogs(newBlogList);
-    };
-    const [title, setTitle] = useState('All Blogs');
+  const [blogs, setBlogs] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(true);
+  const [title, setTitle] = useState("All Blogs");
 
-    useEffect(() => {
-        // any time affter rendering
-        // any code after rerender
-        fetch('http://localhost:8000/blogs')
-        .then(res => {
-            return res.json();
+  useEffect(() => {
+    // any time affter rendering
+    // any code after rerender
+    setTimeout(() => {
+      fetch("http://localhost:8000/blogsww")
+        .then((res) => {
+          if (!res.ok) {
+            throw Error("Could Not fetch data from the resource");
+          }
+          return res.json();
         })
-        .then(data => {
-            setBlogs(data);
+        .then((data) => {
+          setBlogs(data);
+          setError(null);
+          setIsPending(false);
         })
-    }, [title]); //will run only when title changes [] will run only once. the firs render
+        .catch((err) => {
+          setIsPending(false);
+          setError(err.message);
+        });
+    }, 1000);
+  }, []); //will run only when title changes [] will run only once. the firs render
 
-    return ( 
-        <div className="home">
-            {
-                blogs && <BlogList blogs={blogs} title={() => setTitle(title)} handleBlogDelete = {handleBlogDelete}/>
-            }
-              
-        </div>
-     );
-}
- 
+  return (
+    <div className="home">
+      {error && <p>{error}</p>}
+      {isPending && <p>Loading...</p>}
+      {blogs && <BlogList blogs={blogs} title={() => setTitle(title)} />}
+    </div>
+  );
+};
+
 export default Home;
