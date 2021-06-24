@@ -26,7 +26,6 @@ const useFetch = (url) => {
           setError(err.message);
         });
     }, 1000);
-    
   }, [url]); //will run only when title changes [] will run only once. the firs render
   return { data, error, isPending };
 };

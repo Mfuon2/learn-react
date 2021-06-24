@@ -4,7 +4,11 @@ import BlogList from "../templates/BlogList";
 
 const Home = () => {
   const [title, setTitle] = useState("All Blogs");
-  const {data: blogs, error, isPending} = useFetch('http://localhost:8000/blogs')
+  const {
+    data: blogs,
+    error,
+    isPending,
+  } = useFetch("http://localhost:8000/blogs");
   return (
     <div className="home">
       {error && <p>{error}</p>}
