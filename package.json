@@ -17,7 +17,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint ./ --ignore-path .gitignore",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "npm run lint --fix",
+    "start:server": "npx json-server --watch data/db.json --port 8000",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
