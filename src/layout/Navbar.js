@@ -1,11 +1,13 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
-  const title = "R-App";
+  const title = "Art App";
   return (
     <nav className="navbar">
       <h1>{title}</h1>
       <div className="links">
-        <a href="/">Home</a>
-        <a href="/create">New Blog</a>
+        <Link to="/">Home</Link>
+        <Link to="/create">New</Link>
       </div>
     </nav>
   );
