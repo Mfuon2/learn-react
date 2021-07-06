@@ -8,8 +8,10 @@ const useFetch = (url) => {
   useEffect(() => {
     // any time affter rendering
     // any code after rerender
+    const abortController = new AbortController();
+
     setTimeout(() => {
-      fetch(url)
+      fetch(url, { signal: abortController.signal })
         .then((res) => {
           if (!res.ok) {
             throw Error("Could Not fetch data from the resource");
@@ -22,11 +24,17 @@ const useFetch = (url) => {
           setIsPending(false);
         })
         .catch((err) => {
-          setIsPending(false);
-          setError(err.message);
+          if (err.name === "AbortError") {
+            console.log("Request aborted");
+          } else {
+            setIsPending(false);
+            setError(err.message);
+          }
         });
     }, 1000);
-  }, [url]); //will run only when title changes [] will run only once. the firs render
+    return () => abortController.abort();
+  }, [url]);
+  //will run only when title changes [] will run only once. the firs render
   return { data, error, isPending };
 };
 
